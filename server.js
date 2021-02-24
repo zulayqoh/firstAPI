@@ -1,22 +1,37 @@
-var app = require('express')()
+var express = require('express')
+var app = express()
+var bodyParser = require('body-parser')
 
-app.get('/' , function (req , res) {
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+
+var ingredients = [
+    { "id": "22kh", "text": "Eggs" },
+    { "id": "g477", "text": "Beans" },
+    { "id": "ywb3", "text": "Fish" },
+    { "id": "gj37", "text": "Shrimps" },
+    { "id": "gt98", "text": "Milk" },
+    { "id": "re37", "text": "Bacon" }
+]
+
+app.get('/', function (req, res) {
     res.send('My first API')
 })
-app.get('/todos' , function (req , res) {
-    res.send('Welcome!!! Temitope')
+
+app.get('/ingredients', function (req, res) {
+    res.send(ingredients)
 })
 
-app.post('/todos', function (req, res) {
-    var todo = req.body
-    if(!todo) {
-        res.status(500).send({error : "your update todo is empty"})
-    } else{
-        todos.push(todo)
-        res.status(200).send(todos)
+app.post('/ingredients', function (req, res) {
+    var ingredient = req.body
+    if (ingredient.text === "") {
+        res.status(500).send({ error: "your update ingredient is empty" })
+    } else {
+        ingredients.push(ingredient)
+        res.status(200).send(ingredients)
     }
 })
 
-app.listen(3000 , function () {
+app.listen(3000, function () {
     console.log('First API running on PORT 3000')
 })
