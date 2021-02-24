@@ -32,6 +32,29 @@ app.post('/ingredients', function (req, res) {
     }
 })
 
+app.put('/ingredients/:ingredientId', function (req, res) {
+    var ingredientId = req.params.ingredientId
+    var newIngredient = req.body.text
+    if (newIngredient === "") {
+        res.status(500).send({ error: "You must provide the new ingredient to update with" })
+    } else {
+        var objectFound = false
+        for (var i = 0; i < ingredients.length; i++) {
+            var food = ingredients[i]
+            if (food.id === req.params.ingredientId) {
+                ingredients[i].text = newIngredient
+                objectFound = true
+                break
+            }
+        }
+        if (!objectFound) {
+            res.status(500).send({ error: "Ingredient Id not found" })
+        } else {
+            res.send(ingredients)
+        }
+    }
+})
+
 app.listen(3000, function () {
     console.log('First API running on PORT 3000')
 })
