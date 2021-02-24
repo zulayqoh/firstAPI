@@ -41,7 +41,7 @@ app.put('/ingredients/:ingredientId', function (req, res) {
         var objectFound = false
         for (var i = 0; i < ingredients.length; i++) {
             var food = ingredients[i]
-            if (food.id === req.params.ingredientId) {
+            if (food.id === ingredientId) {
                 ingredients[i].text = newIngredient
                 objectFound = true
                 break
@@ -52,6 +52,21 @@ app.put('/ingredients/:ingredientId', function (req, res) {
         } else {
             res.send(ingredients)
         }
+    }
+})
+
+app.delete('/ingredients/:ingredientId', function (req, res) {
+    var unwantedingredientId = req.params.ingredientId
+    if (unwantedingredientId === "") {
+        res.status(500).send({ error: "You must provide the Id of ingredient that you do not want on the list" })
+    } else {
+        for (var i = 0; i < ingredients.length; i++) {
+            var food = ingredients[i]
+            if (food.id === unwantedingredientId) {
+                ingredients.splice(i,1)
+                break
+            }
+        } res.status(200).send(ingredients)
     }
 })
 
